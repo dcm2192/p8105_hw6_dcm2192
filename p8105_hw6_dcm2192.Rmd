@@ -1,0 +1,6 @@
+---
+title: "p8105_hw6_dcm2192"
+author: "Dylan Morgan"
+date: "2024-12-02"
+output: github_document
+---
