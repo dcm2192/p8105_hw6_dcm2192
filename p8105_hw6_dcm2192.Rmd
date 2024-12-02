@@ -4,3 +4,35 @@ author: "Dylan Morgan"
 date: "2024-12-02"
 output: github_document
 ---
+
+Load packages.
+```{r setup, message = FALSE}
+library(tidyverse)
+library(modelr)
+library(mgcv)
+```
+
+## Problem 2
+
+Load data. 
+```{r}
+homicide_data <- read_csv("./data/homicide-data.csv")
+```
+
+Create city_state variable and homicide solved binary variable. 
+Remove cities with missing or inaccurate data. 
+Limit victim_race data to black or white, and make victim_age numeric.
+```{r}
+homicide_data <-
+  homicide_data |>
+  mutate(
+    city_state = str_c(city, ", ", state), 
+    solved = as.numeric(disposition == "Closed by arrest"), 
+    victim_age = as.numeric(victim_age)
+  ) |> 
+  filter(!(city_state %in% c("Dallas, TX", "Phoenix, AZ", "Kansas City, MO", "Tulsa, AL")), 
+         victim_race %in% c("White", "Black")
+         )
+```
+For this problem, limit your analysis those for whom victim_race is white or black. Be sure that victim_age is numeric.
+
