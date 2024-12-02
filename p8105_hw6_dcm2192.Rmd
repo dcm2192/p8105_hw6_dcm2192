@@ -34,5 +34,4 @@ homicide_data <-
          victim_race %in% c("White", "Black")
          )
 ```
-For this problem, limit your analysis those for whom victim_race is white or black. Be sure that victim_age is numeric.
 
