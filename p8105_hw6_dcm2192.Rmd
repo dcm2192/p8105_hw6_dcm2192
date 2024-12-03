@@ -60,6 +60,25 @@ baltimore_fit_log |>
   knitr::kable(digits = 3)
 ```
 
+Run models for each city.
+```{r}
+nest_glm_cities_results <- 
+  homicide_data |> 
+  nest(data = -city_state) |> 
+  mutate(
+    models = map(data, \(df) glm(solved ~ victim_age + victim_sex + victim_race, data = df)), 
+    results = map(models, broom::tidy)) |> 
+  unnest(results)
+
+confint(glm(solved ~ victim_age + victim_sex + victim_race, data = homicide_data))
+
+nest_glm_cities_results |> 
+  select(city_state, term, estimate) |> 
+  mutate(term = fct_inorder(term)) |> 
+  pivot_wider(
+    names_from = term, values_from = estimate) |> 
+  knitr::kable(digits = 3)
+```
 
 
 
