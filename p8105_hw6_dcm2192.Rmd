@@ -35,3 +35,33 @@ homicide_data <-
          )
 ```
 
+For the city of Baltimore, MD, use the glm function to fit a logistic regression with resolved vs unresolved as the outcome and victim age, sex and race as predictors. Save the output of glm as an R object; apply the broom::tidy to this object; and obtain the estimate and confidence interval of the adjusted odds ratio for solving homicides comparing male victims to female victims keeping all other variables fixed.
+
+Create Baltimore dataset.
+```{r}
+baltimore_homicide_data <- 
+  homicide_data |> 
+  filter(city_state == "Baltimore, MD")
+```
+
+Fit logistic regression to Baltimore homicide data. 
+Present estimate and CI of OR for solving homicides comparing male victims to female victims, with all other variables fixed. 
+```{r}
+baltimore_fit_log <- 
+  baltimore_homicide_data |> 
+  glm(solved ~ victim_age + victim_sex + victim_race, data = _, family = binomial())
+
+baltimore_fit_log |>
+  broom::tidy() |>
+  mutate(OR = exp(estimate), 
+         CI_lower = confint(baltimore_fit_log)[,1], 
+         CI_upper = confint(baltimore_fit_log)[,2]) |>
+  select(term, log_OR = estimate, OR, CI_lower, CI_upper, p.value) |>
+  knitr::kable(digits = 3)
+```
+
+
+
+
+
+
